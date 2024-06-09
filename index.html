@@ -1,40 +1,298 @@
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+    <title>reveal.js</title>
 
-		<link rel="stylesheet" href="dist/reset.css">
-		<link rel="stylesheet" href="dist/reveal.css">
-		<link rel="stylesheet" href="dist/theme/black.css">
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <link rel="stylesheet" href="dist/theme/black.css">
 
-		<!-- Theme used for syntax highlighted code -->
-		<link rel="stylesheet" href="plugin/highlight/monokai.css">
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
-			</div>
-		</div>
+    <!-- Theme used for syntax highlighted code -->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css">
+</head>
+<body>
+y>
+<div class="reveal">
+    <div class="slides">
+        <section>
+            <h1>Next.js Tutorial</h1>
+            <p>An Introduction to Next.js</p>
+        </section>
 
-		<script src="dist/reveal.js"></script>
-		<script src="plugin/notes/notes.js"></script>
-		<script src="plugin/markdown/markdown.js"></script>
-		<script src="plugin/highlight/highlight.js"></script>
-		<script>
-			// More info about initialization & config:
-			// - https://revealjs.com/initialization/
-			// - https://revealjs.com/config/
-			Reveal.initialize({
-				hash: true,
+        <section>
+            <h2>What is Next.js?</h2>
+            <p>Next.js is a React framework for building static and server-rendered applications.</p>
+        </section>
 
-				// Learn about plugins: https://revealjs.com/plugins/
-				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
-			});
-		</script>
-	</body>
+        <section>
+            <h2>Features of Next.js</h2>
+            <ul>
+                <li>Server-side Rendering (SSR)</li>
+                <li>Static Site Generation (SSG)</li>
+                <li>API Routes</li>
+                <li>File-system Routing</li>
+                <li>Built-in CSS and Sass Support</li>
+                <li>Image Optimization</li>
+                <li>Incremental Static Regeneration (ISR)</li>
+                <li>Environment Variables</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Setting Up a Next.js Project</h2>
+            <p>To create a new Next.js app, run:</p>
+            <pre><code>npx create-next-app@latest</code></pre>
+        </section>
+
+        <section>
+            <h2>Project Structure</h2>
+            <p>After creating a Next.js project, the basic structure includes:</p>
+            <ul>
+                <li><code>pages/</code> - Contains the application routes</li>
+                <li><code>public/</code> - Static assets</li>
+                <li><code>styles/</code> - CSS styles</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Creating Pages</h2>
+            <p>Create a new file in the <code>pages</code> directory to add a new route:</p>
+            <pre><code>// pages/index.js
+export default function Home() {
+  return (
+    <div>
+      <h1>Welcome to Next.js!</h1>
+    </div>
+  )
+}</code></pre>
+        </section>
+
+        <section>
+            <h2>Linking Between Pages</h2>
+            <p>Use the <code>Link</code> component from <code>next/link</code> to navigate between pages:</p>
+            <pre><code>import Link from 'next/link';
+
+export default function Home() {
+  return (
+    <div>
+      <h1>Welcome to Next.js!</h1>
+      <Link href="/about">
+        <a>Go to About Page</a>
+        </Link>
+    </div>
+  )
+}</code></pre>
+        </section>
+
+        <section>
+            <h2>Styling in Next.js</h2>
+            <p>Next.js supports various styling options:</p>
+            <ul>
+                <li>CSS Modules</li>
+                <li>Global CSS</li>
+                <li>Styled JSX</li>
+                <li>CSS-in-JS libraries (e.g., styled-components)</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>CSS Modules</h2>
+            <p>CSS Modules are supported by default. Create a CSS file and import it as a module:</p>
+            <pre><code>// styles/Home.module.css
+.container {
+  padding: 20px;
+}
+
+// pages/index.js
+import styles from '../styles/Home.module.css';
+
+export default function Home() {
+  return (
+    <div className={styles.container}>
+      <h1>Welcome to Next.js!</h1>
+    </div>
+  )
+}</code></pre>
+        </section>
+
+        <section>
+            <h2>API Routes</h2>
+            <p>Next.js allows you to create API endpoints by adding files to the <code>pages/api</code> directory:</p>
+            <pre><code>// pages/api/hello.js
+export default function handler(req, res) {
+  res.status(200).json({ message: 'Hello, world!' })
+}</code></pre>
+        </section>
+
+        <section>
+            <h2>Server-side Rendering (SSR)</h2>
+            <p>Use <code>getServerSideProps</code> to fetch data on each request:</p>
+            <pre><code>export async function getServerSideProps() {
+  const res = await fetch('https://api.example.com/data');
+  const data = await res.json();
+
+  return { props: { data } };
+}
+
+export default function Page({ data }) {
+  return <div>{data}</div>;
+}</code></pre>
+        </section>
+
+        <section>
+            <h2>Static Site Generation (SSG)</h2>
+            <p>Use <code>getStaticProps</code> to fetch data at build time:</p>
+            <pre><code>export async function getStaticProps() {
+  const res = await fetch('https://api.example.com/data');
+  const data = await res.json();
+
+  return { props: { data } };
+}
+
+export default function Page({ data }) {
+  return <div>{data}</div>;
+}</code></pre>
+        </section>
+
+        <section>
+            <h2>Incremental Static Regeneration (ISR)</h2>
+            <p>Use ISR to update static content after the site has been built:</p>
+            <pre><code>export async function getStaticProps() {
+  const res = await fetch('https://api.example.com/data');
+  const data = await res.json();
+
+  return {
+    props: { data },
+    revalidate: 10, // Revalidate at most once every 10 seconds
+  };
+}
+
+export default function Page({ data }) {
+  return <div>{data}</div>;
+}</code></pre>
+        </section>
+
+        <section>
+            <h2>Dynamic Routes</h2>
+            <p>Create dynamic routes by using brackets in the file name:</p>
+            <pre><code>// pages/posts/[id].js
+import { useRouter } from 'next/router';
+
+export default function Post() {
+  const router = useRouter();
+  const { id } = router.query;
+
+  return <div>Post ID: {id}</div>;
+}</code></pre>
+        </section>
+
+        <section>
+            <h2>Image Optimization</h2>
+            <p>Next.js provides a built-in component for image optimization:</p>
+            <pre><code>import Image from 'next/image';
+
+export default function Home() {
+  return (
+    <div>
+      <h1>Welcome to Next.js!</h1>
+      <Image
+              src="/me.png"
+              alt="Picture of the author"
+              width={500}
+              height={500}
+      />
+    </div>
+  )
+}</code></pre>
+        </section>
+
+        <section>
+            <h2>Environment Variables</h2>
+            <p>Use environment variables in Next.js by creating a <code>.env.local</code> file:</p>
+            <pre><code>API_URL=https://api.example.com</code></pre>
+            <p>Access them in your code via <code>process.env</code>:</p>
+            <pre><code>export async function getStaticProps() {
+  const res = await fetch(process.env.API_URL);
+  const data = await res.json();
+
+  return { props: { data } };
+}</code></pre>
+        </section>
+
+        <section>
+            <h2>Custom App and Document</h2>
+            <p>Customize the default App and Document to control page initialization and HTML:</p>
+            <ul>
+                <li><code>_app.js</code></li>
+                <li><code>_document.js</code></li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Custom App</h2>
+            <p>Override the default App component by creating a <code>_app.js</code> file:</p>
+            <pre><code>// pages/_app.js
+import '../styles/globals.css';
+
+export default function MyApp({ Component, pageProps }) {
+  return <Component {...pageProps}/>;
+}</code></pre>
+        </section>
+
+        <section>
+            <h2>Custom Document</h2>
+            <p>Override the default Document by creating a <code>_document.js</code> file:</p>
+            <pre><code>// pages/_document.js
+            import { Html, Head, Main, NextScript } from 'next/document';
+
+            export default function MyDocument() {
+              return (
+                <Html>
+                  <Head>
+                    <link rel="stylesheet" href="/styles.css"/>
+                  </Head>
+                  <body>
+                    <Main/>
+                    <NextScript/>
+                  </body>
+                </Html>
+              );
+            }</code></pre>
+        </section>
+
+        <section>
+            <h2>Deploying Next.js</h2>
+            <p>You can deploy a Next.js app using Vercel, the platform from the creators of Next.js:</p>
+            <pre><code>vercel</code></pre>
+            <p>Or, deploy to other platforms like Netlify, AWS, and more.</p>
+        </section>
+
+        <section>
+            <h2>Conclusion</h2>
+            <p>Next.js provides a powerful way to build modern web applications with React.</p>
+            <p>Explore more in the <a href="https://nextjs.org/docs">official documentation</a>.</p>
+        </section>
+    </div>
+</div>
+
+
+<script src="dist/reveal.js"></script>
+<script src="plugin/notes/notes.js"></script>
+<script src="plugin/markdown/markdown.js"></script>
+<script src="plugin/highlight/highlight.js"></script>
+<script>
+    // More info about initialization & config:
+    // - https://revealjs.com/initialization/
+    // - https://revealjs.com/config/
+    Reveal.initialize({
+        hash: true,
+
+        // Learn about plugins: https://revealjs.com/plugins/
+        plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
+    });
+</script>
+</body>
 </html>
