@@ -60,7 +60,7 @@ y>
         <section>
             <h2>Creating Pages</h2>
             <p>Create a new file in the <code>pages</code> directory to add a new route:</p>
-            <pre><code>// pages/index.js
+            <pre><code>// app/index.js
 export default function Home() {
   return (
     <div>
@@ -88,36 +88,40 @@ export default function Home() {
         </section>
 
         <section>
-            <h2>Styling in Next.js</h2>
-            <p>Next.js supports various styling options:</p>
-            <ul>
-                <li>CSS Modules</li>
-                <li>Global CSS</li>
-                <li>Styled JSX</li>
-                <li>CSS-in-JS libraries (e.g., styled-components)</li>
-            </ul>
+            <section>
+                <h2>Styling in Next.js</h2>
+                <p>Next.js supports various styling options:</p>
+                <ul>
+                    <li>CSS Modules</li>
+                    <li>Global CSS</li>
+                    <li>Styled JSX</li>
+                    <li>CSS-in-JS libraries (e.g., styled-components)</li>
+                </ul>
+            </section>
+            <section>
+                <h2>CSS Modules</h2>
+                <p>CSS Modules are supported by default. Create a CSS file and import it as a module:</p>
+                <pre><code>// styles/Home.module.css
+                .container {
+                  padding: 20px;
+                }
+
+                // pages/index.js
+                import styles from '../styles/Home.module.css';
+
+                export default function Home() {
+                  return (
+                    <div className={styles.container}>
+                      <h1>Welcome to Next.js!</h1>
+                    </div>
+                  )
+                }</code></pre>
+            </section>
+            <section>
+                <h2>Global CSS</h2>
+                <p>import in js file</p>
+            </section>
         </section>
-
-        <section>
-            <h2>CSS Modules</h2>
-            <p>CSS Modules are supported by default. Create a CSS file and import it as a module:</p>
-            <pre><code>// styles/Home.module.css
-.container {
-  padding: 20px;
-}
-
-// pages/index.js
-import styles from '../styles/Home.module.css';
-
-export default function Home() {
-  return (
-    <div className={styles.container}>
-      <h1>Welcome to Next.js!</h1>
-    </div>
-  )
-}</code></pre>
-        </section>
-
         <section>
             <h2>API Routes</h2>
             <p>Next.js allows you to create API endpoints by adding files to the <code>pages/api</code> directory:</p>
