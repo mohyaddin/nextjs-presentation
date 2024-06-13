@@ -49,42 +49,42 @@ y>
 
         <section>
             <h2>Project Structure</h2>
-            <p>After creating a Next.js project, the basic structure includes:</p>
+            <p>After creating a Next.js project, the basic structure includes: (<a href="https://nextjs.org/docs/getting-started/project-structure">Source</a>)</p>
             <ul>
-                <li><code>pages/</code> - Contains the application routes</li>
+                <li><code>app/</code> - App Router</li>
+                <li><code>pages/</code> - Pages Router</li>
                 <li><code>public/</code> - Static assets</li>
-                <li><code>styles/</code> - CSS styles</li>
+                <li><code>src/</code> - Optional application source folder</li>
             </ul>
         </section>
 
         <section>
             <h2>Creating Pages</h2>
-            <p>Create a new file in the <code>pages</code> directory to add a new route:</p>
-            <pre><code>// app/index.js
+            <p>Create a new file in the <code>app</code> directory to add a new route:</p>
+            <pre><code>// app/page.tsx
 export default function Home() {
   return (
     <div>
       <h1>Welcome to Next.js!</h1>
     </div>
   )
-}</code></pre>
+}
+            </code></pre>
         </section>
 
         <section>
             <h2>Linking Between Pages</h2>
             <p>Use the <code>Link</code> component from <code>next/link</code> to navigate between pages:</p>
             <pre><code>import Link from 'next/link';
-
 export default function Home() {
   return (
     <div>
       <h1>Welcome to Next.js!</h1>
-      <Link href="/about">
-        <a>Go to About Page</a>
-        </Link>
+      <Link href="/about">Go to About Page</Link>
     </div>
   )
-}</code></pre>
+}
+            </code></pre>
         </section>
 
         <section>
@@ -102,100 +102,152 @@ export default function Home() {
                 <h2>CSS Modules</h2>
                 <p>CSS Modules are supported by default. Create a CSS file and import it as a module:</p>
                 <pre><code>// styles/Home.module.css
-                .container {
-                  padding: 20px;
-                }
+.container {
+  padding: 20px;
+}
 
-                // pages/index.js
-                import styles from '../styles/Home.module.css';
+// pages/index.js
+import styles from '../styles/Home.module.css';
 
-                export default function Home() {
-                  return (
-                    <div className={styles.container}>
-                      <h1>Welcome to Next.js!</h1>
-                    </div>
-                  )
-                }</code></pre>
+export default function Home() {
+  return (
+    <div className={styles.container}>
+      <h1>Welcome to Next.js!</h1>
+    </div>
+  )
+}
+                </code></pre>
             </section>
             <section>
                 <h2>Global CSS</h2>
-                <p>import in js file</p>
+                <p>create file `app/global.css` and import in js file <a href="https://nextjs.org/docs/app/building-your-application/styling/css-modules#global-styles">source</a></p>
+                <pre><code>// app/global.css
+body {
+  padding: 20px 20px 60px;
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+// pages/index.js
+// These styles apply to every route in the application
+import './global.css'
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <html lang="en">
+      <body>{children}</body>
+    </html>
+  )
+}
+                </code></pre>
             </section>
         </section>
         <section>
             <h2>API Routes</h2>
-            <p>Next.js allows you to create API endpoints by adding files to the <code>pages/api</code> directory:</p>
-            <pre><code>// pages/api/hello.js
-export default function handler(req, res) {
-  res.status(200).json({ message: 'Hello, world!' })
-}</code></pre>
+            <p>Next.js allows you to create API endpoints by adding files to the <code>app/folderName/page.tsx</code> directory to address api <code>/folderName</code>:</p>
         </section>
 
         <section>
+            <section>
             <h2>Server-side Rendering (SSR)</h2>
-            <p>Use <code>getServerSideProps</code> to fetch data on each request:</p>
-            <pre><code>export async function getServerSideProps() {
-  const res = await fetch('https://api.example.com/data');
-  const data = await res.json();
-
-  return { props: { data } };
+            </section>
+            <section data-auto-animate>
+                <h2>create interface</h2>
+                <pre data-id="fetch-data-1"><code data-trim data-noescape data-line-numbers>interface Post {
+    userId: number;
+    id: number;
+    title: string;
+    body: string;
 }
+                </code></pre>
+            </section>
+            <section data-auto-animate>
+                <h2>fetch data</h2>
+                <pre data-id="fetch-data-1"><code data-trim data-noescape data-line-numbers>interface Post {
+    userId: number;
+    id: number;
+    title: string;
+    body: string;
+}
+const PostsPage = async () => {
+const res = await fetch(
+    'https://jsonplaceholder.typicode.com/posts'
+);
+const posts: Post[] = await res.json();
+}
+                </code></pre>
+            </section>
+            <section data-auto-animate>
+                <h2></h2>
+                <pre data-id="fetch-data-1"><code data-trim data-line-numbers="12-25">interface Post {
+    userId: number;
+    id: number;
+    title: string;
+    body: string;
+}
+const PostsPage = async () => {
+const res = await fetch(
+    'https://jsonplaceholder.typicode.com/posts'
+);
+const posts: Post[] = await res.json();
+return (
+<>
+    <h1>Users</h1>
+    <div>
+        <Link href={'/'}>Go Back To Index</Link>
+    </div>
+    <ul>
+        {posts.map(post =>
+            <li key={post.id}>{post.title}
+                <Link href={'/posts/' + post.id}>link</Link>
+            </li>)}
+    </ul>
+</>
+);
+};
 
-export default function Page({ data }) {
-  return <div>{data}</div>;
-}</code></pre>
+export default PostsPage;
+                </code></pre>
+            </section>
         </section>
 
-        <section>
-            <h2>Static Site Generation (SSG)</h2>
-            <p>Use <code>getStaticProps</code> to fetch data at build time:</p>
-            <pre><code>export async function getStaticProps() {
-  const res = await fetch('https://api.example.com/data');
-  const data = await res.json();
-
-  return { props: { data } };
-}
-
-export default function Page({ data }) {
-  return <div>{data}</div>;
-}</code></pre>
-        </section>
 
         <section>
-            <h2>Incremental Static Regeneration (ISR)</h2>
-            <p>Use ISR to update static content after the site has been built:</p>
-            <pre><code>export async function getStaticProps() {
-  const res = await fetch('https://api.example.com/data');
-  const data = await res.json();
-
-  return {
-    props: { data },
-    revalidate: 10, // Revalidate at most once every 10 seconds
-  };
-}
-
-export default function Page({ data }) {
-  return <div>{data}</div>;
-}</code></pre>
-        </section>
-
-        <section>
+            <section>
             <h2>Dynamic Routes</h2>
             <p>Create dynamic routes by using brackets in the file name:</p>
-            <pre><code>// pages/posts/[id].js
-import { useRouter } from 'next/router';
+                <pre><code data-trim data-line-numbers="12-19">// app/users/[id]/page.tsx
+'use client';
+import React from 'react';
+import {useParams} from "next/navigation";
+import Link from "next/link";
 
-export default function Post() {
-  const router = useRouter();
-  const { id } = router.query;
+interface User {
+    id: number;
+    name: string;
+    username: string;
+}
 
-  return <div>Post ID: {id}</div>;
-}</code></pre>
+async function UserPage() {
+    const params = useParams<{ id: string; }>()
+    const res = await fetch(
+        `https://jsonplaceholder.typicode.com/users/${params.id}`
+    );
+    const user: User = await res.json();
+    return (<div>name: {user.name}</div>);
+}
+export default UserPage;
+                </code></pre>
+            </section>
         </section>
 
-        <section>
+        <section data-visibility="hidden">
             <h2>Image Optimization</h2>
-            <p>Next.js provides a built-in component for image optimization:</p>
+            <p>Next.js provides a built-in component for image optimization: (<a href="https://nextjs.org/docs/pages/building-your-application/optimizing/images">Source</a>)</p>
             <pre><code>import Image from 'next/image';
 
 export default function Home() {
@@ -227,47 +279,6 @@ export default function Home() {
         </section>
 
         <section>
-            <h2>Custom App and Document</h2>
-            <p>Customize the default App and Document to control page initialization and HTML:</p>
-            <ul>
-                <li><code>_app.js</code></li>
-                <li><code>_document.js</code></li>
-            </ul>
-        </section>
-
-        <section>
-            <h2>Custom App</h2>
-            <p>Override the default App component by creating a <code>_app.js</code> file:</p>
-            <pre><code>// pages/_app.js
-import '../styles/globals.css';
-
-export default function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps}/>;
-}</code></pre>
-        </section>
-
-        <section>
-            <h2>Custom Document</h2>
-            <p>Override the default Document by creating a <code>_document.js</code> file:</p>
-            <pre><code>// pages/_document.js
-            import { Html, Head, Main, NextScript } from 'next/document';
-
-            export default function MyDocument() {
-              return (
-                <Html>
-                  <Head>
-                    <link rel="stylesheet" href="/styles.css"/>
-                  </Head>
-                  <body>
-                    <Main/>
-                    <NextScript/>
-                  </body>
-                </Html>
-              );
-            }</code></pre>
-        </section>
-
-        <section>
             <h2>Deploying Next.js</h2>
             <p>You can deploy a Next.js app using Vercel, the platform from the creators of Next.js:</p>
             <pre><code>vercel</code></pre>
@@ -295,7 +306,8 @@ export default function MyApp({ Component, pageProps }) {
         hash: true,
 
         // Learn about plugins: https://revealjs.com/plugins/
-        plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
+        plugins: [RevealMarkdown, RevealHighlight, RevealNotes],
+        slideNumber: 'c/t',
     });
 </script>
 </body>
